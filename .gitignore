@@ -1,0 +1,7 @@
+# Build results
+[Dd]ebug/
+[Bb]in/
+.git
+.vs
+/TestResults
+/packages
