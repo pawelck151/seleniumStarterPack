@@ -5,7 +5,8 @@ using StarterForSeleniumAutomation.Pages;
 using StarterForSeleniumAutomation.Enums;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.IE;
+using WebDriverManager.DriverConfigs.Impl;
+using OpenQA.Selenium.Edge;
 
 namespace StarterForSeleniumAutomation.Tests
 {
@@ -53,9 +54,7 @@ namespace StarterForSeleniumAutomation.Tests
         protected void LaunchBrowser()
         {
             browserType = ConstantTestProperties.BROWSER_TYPE;
-
-            //change this path
-            string driversPath = @"C:\Users\pawel.wojtak\Documents\Projects\SeleniumTestFrameWork\Common\Drivers\";
+            SetWebDriverManger(browserType);
 
             if (browserType == BrowserType.FireFox)
             {
@@ -67,15 +66,13 @@ namespace StarterForSeleniumAutomation.Tests
             {
                 ChromeOptions options = new ChromeOptions();
                 options.SetLoggingPreference(LogType.Browser, LogLevel.Severe);
-                driver = new ChromeDriver(driversPath, options);
+                driver = new ChromeDriver(options);
             }
-            else if (browserType == BrowserType.IE)
+            else if (browserType == BrowserType.Edge)
             {
-                InternetExplorerOptions options = new InternetExplorerOptions()
-                {
-                    IntroduceInstabilityByIgnoringProtectedModeSettings = true,
-                };
-                driver = new InternetExplorerDriver(driversPath, options);
+                EdgeOptions options = new EdgeOptions();
+                options.SetLoggingPreference(LogType.Browser, LogLevel.Severe);
+                driver = new EdgeDriver(options);
             }
 
             driver.Manage().Cookies.DeleteAllCookies();
@@ -84,6 +81,27 @@ namespace StarterForSeleniumAutomation.Tests
             driver.Manage().Logs.GetLog(LogType.Browser);
 
             homePage = new HomePage(driver);
+        }
+
+        private void SetWebDriverManger(BrowserType browserType)
+        {
+            switch (browserType)
+            {
+                case BrowserType.Chrome:
+                    new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig());
+                    break;
+
+                case BrowserType.Edge:
+                    new WebDriverManager.DriverManager().SetUpDriver(new EdgeConfig());
+                    break;
+
+                case BrowserType.FireFox:
+                    new WebDriverManager.DriverManager().SetUpDriver(new FirefoxConfig());
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         #endregion Methods

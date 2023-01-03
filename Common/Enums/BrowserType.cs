@@ -8,6 +8,6 @@ namespace StarterForSeleniumAutomation.Enums
 {
     public enum BrowserType
     {
-        Chrome, IE, FireFox
+        Chrome, Edge, FireFox
     }
 }
